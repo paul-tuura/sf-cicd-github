@@ -47,11 +47,16 @@ jobs:
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Runs a single command using the runners shell
-      - name: Handle Deployment
+      - name: Install Docker Container
         uses: docker://salesforce/salesforcedx:latest-full
         
       - name: Install shelljs
         run: npm i shelljs
+
+      - name: Check SFDX, Node versions
+        run: |
+          sfdx --version
+          node --version
 
       # Runs a set of commands using the runners shell
       - name: Run script
