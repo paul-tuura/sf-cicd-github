@@ -37,12 +37,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Configure Git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --global --add safe.directory /__w/sf-cicd-github/sf-cicd-github
+
       - name: Check SFDX, Node versions
         run: |
           npm i shelljs
           sfdx --version
           node --version
-          git config --global --add safe.directory /__w/sf-cicd-github/sf-cicd-github
 
       # Runs a set of commands using the runners shell
       - name: Run script
