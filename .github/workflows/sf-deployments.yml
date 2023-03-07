@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: docker://salesforce/salesforcedx:latest-full
-      #options: --user root
+      options: --user root
     environment: 
       name: develop
 
