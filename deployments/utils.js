@@ -203,18 +203,6 @@ module.exports.createOrgSnapshot = function (buildId, branchName, snapshotBranch
 }
 
 module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) {
-    // let gitEmail = this.executeCmd('git config user.email');
-    // let gitUser = this.executeCmd('git config user.name');
-
-    // if (gitEmail && gitUser) {
-    //     console.log('git email: ',gitEmail);
-    //     console.log('git user:',gitUser);
-    // } else {
-    //     console.log('setting default git user/email...');
-    //     this.executeCmd('git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"');
-    //     this.executeCmd('git config --local user.name "github-actions[bot]"');
-    // }
-
     // switch to snapshot branch
     this.executeCmd(`git switch --orphan ${snapshotBranch} || git checkout --orphan ${snapshotBranch}`, false);
     this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);
