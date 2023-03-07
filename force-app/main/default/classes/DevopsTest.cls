@@ -1,5 +1,5 @@
 public with sharing class DevopsTest {
-    public DevopsTest() {
-
+    public static void helloWorld() {
+        System.debug('hello world!');
     }
 }
