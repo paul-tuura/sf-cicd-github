@@ -39,10 +39,13 @@ if(!LOGIN_URL) {LOGIN_URL = DEFAULT_LOGIN_URL};
 
 // start authentication
 if (AUTH_URL) {
+    console.log('start auth url authentication');
     utils.authenticateOrg(AUTH_URL);
 } else {
+    console.log('start jwt authentication');
     utils.authenticateOrgJWT(KEY_FILE_LOCATION, CONSUMER_KEY, USERNAME, LOGIN_URL);
 }
+console.log('authenticated');
 
 //get current version of the org
 let previousCommit = utils.getLatestDeploymentLog(BRANCH);
