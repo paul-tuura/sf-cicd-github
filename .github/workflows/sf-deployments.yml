@@ -12,14 +12,14 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  SFDC_AUTH_URL: ${{ secrets.SFDC_AUTH_URL }}
-  TEST_LEVEL: ${{ vars.TEST_LEVEL }}
-  SFDC_LOGIN_URL: ${{ vars.SFDC_LOGIN_URL }}
-  CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
-  SFDC_USERNAME: ${{ vars.SFDC_USERNAME }}
-  CHECK_DEPLOY: ${{ vars.CHECK_DEPLOY }}
-  CURRENT_BRANCH: ${GITHUB_REF##*/}
+# env:
+#   SFDC_AUTH_URL: ${{ secrets.SFDC_AUTH_URL }}
+#   TEST_LEVEL: ${{ vars.TEST_LEVEL }}
+#   SFDC_LOGIN_URL: ${{ vars.SFDC_LOGIN_URL }}
+#   CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+#   SFDC_USERNAME: ${{ vars.SFDC_USERNAME }}
+#   CHECK_DEPLOY: ${{ vars.CHECK_DEPLOY }}
+#   CURRENT_BRANCH: ${GITHUB_REF##*/}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -36,11 +36,8 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - run: echo ${GITHUB_REF##*/}
-      - run: "echo SFDC Auth URL- $SFDC_AUTH_URL"
-      - run: echo "snapshot branch- $ORG_SNAPSHOT_BRANCH"
-      - run: echo "Test level- $TEST_LEVEL"
-      - run: echo "current branch - $CURRENT_BRANCH"
+      - run: echo "snapshot branch- $vars.ORG_SNAPSHOT_BRANCH"
+      - run: echo "Test level- $vars.TEST_LEVEL"
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Code
@@ -58,4 +55,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run script
-        run: node ./deployments/deploy.js --authUrl=${{ secrets.SFDC_AUTH_URL }} --branch=${GITHUB_REF##*/} --buildId=01 --snapshotBranch=${{ vars.ORG_SNAPSHOT_BRANCH }} --testLevel=${{ vars.TEST_LEVEL }} --checkDeploy=${{ vars.CHECK_DEPLOY }}
+        run: node ./deployments/deploy.js --authUrl=${{ secrets.SFDC_AUTH_URL }} --branch=develop --buildId=01 --snapshotBranch=${{ vars.ORG_SNAPSHOT_BRANCH }} --testLevel=${{ vars.TEST_LEVEL }} --checkDeploy=${{ vars.CHECK_DEPLOY }}
