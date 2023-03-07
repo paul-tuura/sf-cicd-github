@@ -205,11 +205,11 @@ module.exports.createOrgSnapshot = function (buildId, branchName, snapshotBranch
 module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) {
     // switch to snapshot branch
     this.executeCmd(`git switch --orphan ${snapshotBranch} || git checkout --orphan ${snapshotBranch}`, false);
-    this.executeCmd('git status');
     this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);
     this.executeCmd('git status');
 
     // save snapshot to snapshotBranch
+    this.executeCmd('git rm -rf .');
     this.executeCmd(`git add ${branchName}/`, false);
     this.executeCmd('git status');
     this.executeCmd(`git commit -m "${buildId}"`, false);
