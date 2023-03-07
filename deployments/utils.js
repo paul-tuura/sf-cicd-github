@@ -246,6 +246,8 @@ module.exports.deployFiles = function (checkOnly, testLevel) {
 
 //execute a CLI command
 module.exports.executeCmd = function (cmd, silent, errorMsg='') {
+    console.log('executing command: ',cmd);
+    
     var params = {};
     if(silent) { params.silent = true; }
 
