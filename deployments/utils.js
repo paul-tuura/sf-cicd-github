@@ -209,7 +209,7 @@ module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) 
     this.executeCmd('git status');
 
     // save snapshot to snapshotBranch
-    this.executeCmd('git reset');                                                                                // unstage all files
+    this.executeCmd('git reset');                                                                                   // unstage all files
     this.executeCmd(`git add ${branchName}/`, false);                                                               // stage the snapshot folder
     this.executeCmd('git status');
     this.executeCmd(`git commit -m "${buildId}"`, false);
