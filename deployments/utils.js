@@ -204,7 +204,7 @@ module.exports.createOrgSnapshot = function (buildId, branchName, snapshotBranch
 
 module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) {
     // switch to snapshot branch
-    this.executeCmd(`git switch --orphan ${snapshotBranch}`, false);
+    this.executeCmd(`git switch --orphan ${snapshotBranch} || git checkout --orphan ${snapshotBranch}`, false);
     this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);
 
     // save snapshot to snapshotBranch
