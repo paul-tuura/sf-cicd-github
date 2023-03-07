@@ -216,9 +216,6 @@ module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) 
     this.executeCmd(`git push || git push --set-upstream origin ${snapshotBranch}`, false);                         // push the snapshot folder to the branch
 
     console.log(`===Snanpshot Saved to branch ${branchName}`);
-
-    // return to previous branch
-    this.executeCmd(`git checkout ${branchName}`, false);
 }
 
 //deploy to Org
