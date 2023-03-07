@@ -5,9 +5,9 @@ name: Salesforce CI/CD (Github)
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: [ "develop", "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop", "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,9 +21,17 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      # log repository
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Runs a single command using the runners shell
       - name: Handle Deployment
@@ -34,4 +42,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run script
-        run: node ./deployments/deploy.js
+        run: node ./deployments/deploy.js --authUrl=${{ secrets.SFDC_AUTH_URL }} --buildId=01 --snapshotBranch=${{ vars.ORG_SNAPSHOT_BRANCH }} --testLevel=${{ vars.TEST_LEVEL }} --checkDeploy=${{ vars.CHECK_DEPLOY }}
