@@ -222,7 +222,7 @@ module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) 
     // save snapshot to snapshotBranch
     this.executeCmd(`git add ${branchName}/`, false);
     this.executeCmd(`git commit -m "${buildId}"`, false);
-    this.executeCmd('git push', false);
+    this.executeCmd(`git push || git push --set-upstream origin ${snapshotBranch}`, false);
 
     console.log(`===Snanpshot Saved to branch ${branchName}`);
 
