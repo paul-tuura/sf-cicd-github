@@ -215,7 +215,7 @@ module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) 
     this.executeCmd(`git commit -m "${buildId}"`, false);
     this.executeCmd(`git push || git push --set-upstream origin ${snapshotBranch}`, false);                         // push the snapshot folder to the branch
 
-    console.log(`===Snanpshot Saved to branch ${branchName}`);
+    console.log(`===Snapshot Saved to branch ${branchName}`);
 
     // return to previous branch
     this.executeCmd(`git checkout ${branchName}`, false);
@@ -249,8 +249,6 @@ module.exports.deployFiles = function (checkOnly, testLevel) {
 
 //execute a CLI command
 module.exports.executeCmd = function (cmd, silent, errorMsg='') {
-    console.log('executing command: ',cmd);
-    
     var params = {};
     if(silent) { params.silent = true; }
 
