@@ -1,3 +1,11 @@
+# Usage: each workflow (deployment) can have a new yml file 
+# Copy the contents of the file, and update the following items for your environment:
+#   - name
+#   - on.push.branches
+#   - jobs.deploy.if
+#   - jobs.deploy.environment.name
+
+# set a unique name for this workflow
 name: Salesforce CI/CD - Deploy develop to Develop Org
 
 # Controls when the workflow will run
