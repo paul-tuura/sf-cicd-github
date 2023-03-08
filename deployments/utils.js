@@ -204,13 +204,16 @@ module.exports.createOrgSnapshot = function (buildId, branchName, snapshotBranch
 
 module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) {
     // switch to snapshot branch
-    this.executeCmd(`git switch --orphan ${snapshotBranch}`, false);
-    this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);
+    this.executeCmd(`git switch --orphan ${snapshotBranch} || git checkout --orphan ${snapshotBranch}`, false);     // switch to orphan branch
+    this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);                                            // pull any changes, if branch exists
+    this.executeCmd('git status');
 
     // save snapshot to snapshotBranch
-    this.executeCmd(`git add ${branchName}/`, false);
+    this.executeCmd('git rm -rf .');                                                                                // remove files
+    this.executeCmd(`git add ${branchName}/`, false);                                                               // stage the snapshot folder
+    this.executeCmd('git status');
     this.executeCmd(`git commit -m "${buildId}"`, false);
-    this.executeCmd('git push', false);
+    this.executeCmd(`git push || git push --set-upstream origin ${snapshotBranch}`, false);                         // push the snapshot folder to the branch
 
     console.log(`===Snanpshot Saved to branch ${branchName}`);
 
@@ -246,6 +249,8 @@ module.exports.deployFiles = function (checkOnly, testLevel) {
 
 //execute a CLI command
 module.exports.executeCmd = function (cmd, silent, errorMsg='') {
+    console.log('executing command: ',cmd);
+    
     var params = {};
     if(silent) { params.silent = true; }
 
