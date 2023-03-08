@@ -5,8 +5,12 @@ on:
   # Triggers the workflow on push or pull request events
   push:
     branches: [ "develop", "main" ]
+    paths:
+        - 'force-app/**'
   pull_request:
     branches: [ "develop", "main" ]
+    paths:
+        - 'force-app/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -57,7 +61,7 @@ jobs:
         run: echo '${{ toJSON(matrix) }}'
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # fetch depth is set to 0 to get all commit numbers
+      # feth depth set to 0 to access previous commits that have been pushed to the repository.
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
