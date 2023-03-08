@@ -11,10 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  CURRENT_BRANCH: develop
-  BUILD_ID: ${{github.run_number}}
-
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: docker://salesforce/salesforcedx:latest-full
-      options: --user root
+      #options: --user root
     environment: 
       name: develop
 
@@ -42,11 +38,6 @@ jobs:
 
       - name: Debug
         run: echo ${{ env.BRANCH_NAME }}
-
-      # - name: Get Build id
-      #   shell: bash
-      #   run: echo "BUILD_ID=$(echo develop-build#${github.run_number}-" >> $GITHUB_ENV
-
 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
@@ -75,8 +66,8 @@ jobs:
       - name: Configure Git
         run: |
           git config --global --add safe.directory /__w/sf-cicd-github/sf-cicd-github
-          git config --global user.email "paul-tuura@slalom.com"
-          git config --global user.name "Paul"
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
 
       - name: Check SFDX, Node versions
         run: |
