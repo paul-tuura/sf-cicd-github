@@ -1,0 +1,76 @@
+name: Salesforce CI/CD - Deploy develop to Develop Org
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches: [ "develop" ]
+    paths:
+        - 'force-app/**'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a job for each branch that will be deployed
+  deploy:
+    
+    # This section will be configured for each branch and org
+    name: Set Environment Variables
+    if: github.ref == 'refs/heads/develop'  # change to desired branch (refs/head/BRANCH_NAME)
+    environment: 
+      name: develop                         # select the name of the configured github environment that contains the corresponding secrets/variables
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # Use existing docker container with sfdx and node pre-installed
+    # https://hub.docker.com/r/salesforce/salesforcedx
+    container: 
+      image: docker://salesforce/salesforcedx:latest-full
+      #options: --user root
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      
+      # set branch name for pull request or commit
+      - name: Get branch name (merge)
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
+
+      - name: Get branch name (pull request)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
+
+      # Run Description
+      - name: Log job details
+        run: |
+          echo "🎉 The job (buld# ${{ github.run_number }}) was automatically triggered by a ${{ github.event_name }} event on the ${{ env.BRANCH_NAME }} branch."
+          echo "Before deployment, a snapshot of deployment files from the Org will be stored on the ${{ vars.ORG_SNAPSHOT_BRANCH }} branch."
+          echo "The test level is set to- ${{ vars.TEST_LEVEL }} and the checkDeploy is set to- ${{ vars.CHECK_DEPLOY }}"
+      
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # feth depth set to 0 to access previous commits that have been pushed to the repository.
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # set required defaults git configs
+      - name: Configure Git
+        #git config --global --add safe.directory /__w/sf-cicd-github/sf-cicd-github
+        run: |
+          git config --global --add safe.directory /__w/${{github.event.repository.name}}/${{github.event.repository.name}}
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+
+      # install shelljs and validate sfdx/node versions
+      - name: Check SFDX, Node versions
+        run: |
+          npm i shelljs
+          sfdx --version
+          node --version
+
+      # Runs deployment script
+      - name: Run script
+        run: node ./deployments/deploy.js --authUrl=${{ secrets.SFDC_AUTH_URL }} --branch=${{ env.BRANCH_NAME }} --buildNumber=${{ github.run_number }} --snapshotBranch=${{ vars.ORG_SNAPSHOT_BRANCH }} --testLevel=${{ vars.TEST_LEVEL }} --checkDeploy=${{ vars.CHECK_DEPLOY }}
