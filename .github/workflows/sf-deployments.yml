@@ -1,9 +1,8 @@
-# This is a basic workflow to help you get started with Actions
 name: Salesforce CI/CD (Github)
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Triggers the workflow on push or pull request events
   push:
     branches: [ "develop", "main" ]
   pull_request:
@@ -31,8 +30,22 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - run: echo "Github Actor- ${{ github.actor }}"
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+      - name: Dump job context
+        run: echo '${{ toJSON(job) }}'
+      - name: Dump steps context
+        run: echo '${{ toJSON(steps) }}'
+      - name: Dump runner context
+        run: echo '${{ toJSON(runner) }}'
+      - name: Dump strategy context
+        run: echo '${{ toJSON(strategy) }}'
+      - name: Dump matrix context
+        run: echo '${{ toJSON(matrix) }}'
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # fetch depth is set to 0 to get all commit numbers
       - name: Checkout Code
         uses: actions/checkout@v3
         with:

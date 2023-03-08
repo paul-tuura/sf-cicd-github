@@ -205,12 +205,12 @@ module.exports.createOrgSnapshot = function (buildId, branchName, snapshotBranch
 module.exports.saveOrgSnapshot = function (buildId, branchName, snapshotBranch) {
     // switch to snapshot branch
     this.executeCmd(`git switch --orphan ${snapshotBranch} || git checkout --orphan ${snapshotBranch}`, false);     // switch to orphan branch
+    this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);                                            // pull any changes, if branch exists
     this.executeCmd('git status');
 
     // save snapshot to snapshotBranch
     this.executeCmd('git rm -rf .');                                                                                // remove files
     this.executeCmd(`git add ${branchName}/`, false);                                                               // stage the snapshot folder
-    this.executeCmd(`git pull origin ${snapshotBranch} || true`, false);                                            // pull any changes, if branch exists
     this.executeCmd('git status');
     this.executeCmd(`git commit -m "${buildId}"`, false);
     this.executeCmd(`git push || git push --set-upstream origin ${snapshotBranch}`, false);                         // push the snapshot folder to the branch
