@@ -10,7 +10,7 @@ utils.setup();
 //get arguments from command line
 const args = require('minimist')(process.argv.slice(2));
 
-const BUILD_ID = args['buildId'];               // required
+const BUILD_NUMBER = args['buildNumber'];       // required
 const BRANCH = args['branch'];                  // required
 
 const SNAPSHOT_BRANCH = args['snapshotBranch']; // optional
@@ -23,9 +23,15 @@ const AUTH_URL = args['authUrl'];               // conditionally required
 let LOGIN_URL = args['loginURL'];               // conditionally required
 
 //validate inputs
-if(!BRANCH) utils.errorMsgAndExit('The current branch is required for deployment.');
-
-if(!BUILD_ID) utils.errorMsgAndExit('The build Id is required for deployment.');
+let BUILD_ID = '';
+if (!BRANCH) {
+    utils.errorMsgAndExit('The current branch is required for deployment.');
+} else if (!BUILD_NUMBER) {
+    utils.errorMsgAndExit('The build Id is required for deployment.');
+} else {
+    let datetime = new Date().toISOString().split('.')[0];
+    BUILD_ID = `${BRANCH}-build#${BUILD_NUMBER}-${datetime}`;
+}
 
 if (!AUTH_URL && (USERNAME || CONSUMER_KEY)) {
     if (!USERNAME) utils.errorMsgAndExit('USERNAME is required for JWT authentication.');

@@ -4,7 +4,7 @@ name: Salesforce CI/CD (Github)
 on:
   # Triggers the workflow on push or pull request events
   push:
-    branches: [ "develop", "main" ]
+    branches: [ "develop"]
     paths:
         - 'force-app/**'
   pull_request:
@@ -81,4 +81,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run script
-        run: node ./deployments/deploy.js --authUrl=${{ secrets.SFDC_AUTH_URL }} --branch=${{ env.BRANCH_NAME }} --buildId=${{ github.run_number }} --snapshotBranch=${{ vars.ORG_SNAPSHOT_BRANCH }} --testLevel=${{ vars.TEST_LEVEL }} --checkDeploy=${{ vars.CHECK_DEPLOY }}
+        run: node ./deployments/deploy.js --authUrl=${{ secrets.SFDC_AUTH_URL }} --branch=${{ env.BRANCH_NAME }} --buildNumber=${{ github.run_number }} --snapshotBranch=${{ vars.ORG_SNAPSHOT_BRANCH }} --testLevel=${{ vars.TEST_LEVEL }} --checkDeploy=${{ vars.CHECK_DEPLOY }}
