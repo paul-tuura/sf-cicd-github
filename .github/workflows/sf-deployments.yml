@@ -4,7 +4,7 @@ name: Salesforce CI/CD (Github)
 on:
   # Triggers the workflow on push or pull request events
   push:
-    branches: [ "develop"]
+    branches: [ "develop", "main"]
     paths:
         - 'force-app/**'
   pull_request:
@@ -90,7 +90,7 @@ jobs:
     name: Deploy to Prod                    # set any descriptive name
     if: github.ref == 'refs/heads/prod'     # change to desired branch (github.ref == 'refs/head/BRANCH_NAME)
     environment: 
-      name: main                         # select the name of the configured github environment that contains the corresponding secrets/variables
+      name: main                            # select the name of the configured github environment that contains the corresponding secrets/variables
 
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
