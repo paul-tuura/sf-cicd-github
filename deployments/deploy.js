@@ -30,7 +30,7 @@ if (!BRANCH) {
     utils.errorMsgAndExit('The build Id is required for deployment.');
 } else {
     let datetime = new Date().toISOString().split('.')[0];
-    BUILD_ID = `${BRANCH}-build#${BUILD_NUMBER}-${datetime}`;
+    BUILD_ID = `${BRANCH}_build#${BUILD_NUMBER}_${datetime}`;
 }
 
 if (!AUTH_URL && (USERNAME || CONSUMER_KEY)) {

@@ -50,29 +50,12 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
 
-      - name: Debug
-        run: echo ${{ env.BRANCH_NAME }}
-
       # Run Description
-      - run: |
-          echo "🎉 The job (buld# ${{ github.run_number }}) was automatically triggered by a ${{ github.event_name }} event on branch ${{ env.BRANCH_NAME }}."
-          echo "Before deployment, a snapshot of deployment files from the Org will be stored on branch - ${{ vars.ORG_SNAPSHOT_BRANCH }}."
+      - name: Log job details
+        run: |
+          echo "🎉 The job (buld# ${{ github.run_number }}) was automatically triggered by a ${{ github.event_name }} event on the ${{ env.BRANCH_NAME }} branch."
+          echo "Before deployment, a snapshot of deployment files from the Org will be stored on the ${{ vars.ORG_SNAPSHOT_BRANCH }} branch."
           echo "The test level is set to- ${{ vars.TEST_LEVEL }} and the checkDeploy is set to- ${{ vars.CHECK_DEPLOY }}"
-
-      # additional logging
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
-      - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
-      - name: Dump steps context
-        run: echo '${{ toJSON(steps) }}'
-      - name: Dump runner context
-        run: echo '${{ toJSON(runner) }}'
-      - name: Dump strategy context
-        run: echo '${{ toJSON(strategy) }}'
-      - name: Dump matrix context
-        run: echo '${{ toJSON(matrix) }}'
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # feth depth set to 0 to access previous commits that have been pushed to the repository.
@@ -132,29 +115,12 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
 
-      - name: Debug
-        run: echo ${{ env.BRANCH_NAME }}
-
       # Run Description
-      - run: |
-          echo "🎉 The job (buld# ${{ github.run_number }}) was automatically triggered by a ${{ github.event_name }} event on branch ${{ env.BRANCH_NAME }}."
-          echo "Before deployment, a snapshot of deployment files from the Org will be stored on branch - ${{ vars.ORG_SNAPSHOT_BRANCH }}."
+      - name: Log job details
+        run: |
+          echo "🎉 The job (buld# ${{ github.run_number }}) was automatically triggered by a ${{ github.event_name }} event on the ${{ env.BRANCH_NAME }} branch."
+          echo "Before deployment, a snapshot of deployment files from the Org will be stored on the ${{ vars.ORG_SNAPSHOT_BRANCH }} branch."
           echo "The test level is set to- ${{ vars.TEST_LEVEL }} and the checkDeploy is set to- ${{ vars.CHECK_DEPLOY }}"
-
-      # additional logging
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
-      - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
-      - name: Dump steps context
-        run: echo '${{ toJSON(steps) }}'
-      - name: Dump runner context
-        run: echo '${{ toJSON(runner) }}'
-      - name: Dump strategy context
-        run: echo '${{ toJSON(strategy) }}'
-      - name: Dump matrix context
-        run: echo '${{ toJSON(matrix) }}'
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # feth depth set to 0 to access previous commits that have been pushed to the repository.
